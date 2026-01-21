@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер валют</title>
+    <link rel="stylesheet" href="API/static/obmen.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-leaf"></i>РАСЧЕТ КУРСА</h1>
+            <p class="subtitle">Конвертер валют с актуальными курсами</p>
+        </header>
+
+        <main>
+            <div class="app-container">
+                <!-- Ответ от запросов -->
+                <section class="rates-section">
+                    <form action="/otzivi" method="get">
+                        <button id="refresh-rates" class="refresh-btn">
+                            <i class="fas fa-sync-alt"></i> Обновить КУРС
+                        </button>
+                        <p class="last-update">Отзывы ВСЕ: <span id="last-update">{{dict_otziv}}</span></p>
+                    </form>
+
+                </section>
+
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2024 Харитонов Семен | Конвертер валют</p>
+            <p class="disclaimer">Курсы настоящие</p>
+        </footer>
+    </div>
+</body>
+</html>

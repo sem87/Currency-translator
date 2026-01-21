@@ -1,0 +1,22 @@
+[tool.black]
+line-length = 120
+target-version = ['py312']  # Для Python 3.12.2
+extend-exclude = '''
+/(
+    \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | venv
+    | alembic
+    | docker
+    | __pycache__
+)/
+'''
+
