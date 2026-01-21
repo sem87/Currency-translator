@@ -130,7 +130,7 @@ def pars(request: Request, summa: float = Form(...),
          "vrema_obnow": tabliza_zen.created_at, "ticker": tik.ticker, "ticker_convert": tik.ticker_convert})
 
 
-@app.get("/sel", tags=["Действия select bnl"], summary="Простейшие операции",
+@app.get("/sel", tags=["Действия select bnl"], summary="Простейшие операции изм",
          description="Действия select ОБУЧЕНИЕ")
 def selec():
     firs = session.query(Usersql.age, Usersql.id, Usersql.name_fio).order_by(desc(Usersql.age))
