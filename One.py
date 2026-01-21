@@ -22,7 +22,7 @@ templates = Jinja2Templates(directory="HTML")
 
 
 # -----------------------------
-@app.get("/", tags=["Главная страница"], summary="Начальная страница", description="Загружает главную страницу HTML")
+@app.get("/", tags=["Главная страница ПО ВАЛЮТЕ"], summary="Начальная страница", description="Загружает главную страницу HTML")
 def nachalo(request: Request):
     tabliza_zen = session.query(Zeni).first()
     okruglen = Zen(usd=tabliza_zen.usd, eur=tabliza_zen.eur, gbp=tabliza_zen.gbp, cny=tabliza_zen.cny,
