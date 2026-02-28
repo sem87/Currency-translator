@@ -1,6 +1,6 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
-from My_site.pysev.sev import *
+from pysev.sev import *
 
 
 # def test_fff():

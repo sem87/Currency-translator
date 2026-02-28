@@ -33,7 +33,7 @@ class User(BaseModel):
     login: str
     password: str
 
-    @field_validator('login',mode='before')
+    @field_validator('login', mode='before')
     def norm_log(cls, v):
         if v == 123:
             raise ValueError(f"Ошибка {v} не строка!!!!!")
