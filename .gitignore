@@ -1,21 +1,77 @@
-.idea
-.env
-.env.term
-SEM.session
-# Byte-compiled / optimized / DLL files
+# потом внесем что нибудь типа енв
+# === Python ===
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# SQLite databases (если используете)
-*.db
-*.sqlite
-
-# Log files
-*.log
-logs/
-
-# Virtual environments
+# === Virtual Environments ===
+.venv
 .venv/
 venv/
-env/
+ENV/
+env.bak/
+venv.bak/
+
+# === FastAPI / ASGI / Uvicorn ===
+# (обычно не требуют специфичных исключений, но логи — да)
+*.log
+logs/
+informing/
+inform.log
+loGgGi.log
+Core/
+Core/logs
+
+# === SQLite ===
+# Игнорируем файлы БД, если они генерируются локально
+*.sqlite3
+*.db
+*.sqlite
+sql_terminator.db
+books.db
+
+# Если у вас есть фиксированный путь к БД, например:
+# database.db
+# — раскомментируйте строку ниже:
+# database.db
+
+# === Secrets & Config ===
+.env
+.env.local
+.env.ter
+.env.term
+.env.wallet
+env.wallet
+token.pickle
+credentials.json
+.env.*.local
+config/local_settings.py
+SEM.session
+
+# === IDE / Editors ===
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

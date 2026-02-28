@@ -36,7 +36,7 @@ jobs:
           cd tests
           ls -la
       - name: начало tests
-        run: pytest tests/test_sev.py -v
+        run: pytest tests/tests_sev.py -v
         # pytest tests/ -v --html=results/report.html --self-contained-html
         env:
             PYTHONPATH: ${{ github.workspace }}  # 👈 Добавляем корень репозитория в путь
