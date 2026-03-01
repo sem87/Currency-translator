@@ -1,0 +1,43 @@
+# docker-compose.yml
+version: '3.8'  # Версия формата файла
+
+services:  # Список сервисов (контейнеров)
+
+  # 🎯 Наш FastAPI приложение
+  web:
+    build: .  # Сборка из Dockerfile в текущей папке
+    container_name: fastapi_app  # Имя контейнера
+    ports:
+      - "8000:8000"  # "хост:контейнер"
+    environment:  # Переменные окружения
+      - DOCKER_ENV=true  # Флаг для отключения reload
+      - DATABASE_URL=sqlite:///./app/data.db
+    volumes:  # Монтирование папок
+      - .:/app  # Синхронизация кода (для разработки)
+      - ./logs:/app/logs  # Логи сохраняются на хосте
+    restart: unless-stopped  # Перезапуск при падении
+    networks:
+      - app_network  # Сеть для связи сервисов
+
+  # 🗄️ Опционально: база данных PostgreSQL
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: postgres_db
+  #   environment:
+  #     POSTGRES_USER: myuser
+  #     POSTGRES_PASSWORD: mypassword
+  #     POSTGRES_DB: mydb
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - app_network
+
+# 🌐 Сети и тома
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres_data:  # Для сохранения данных БД

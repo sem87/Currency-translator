@@ -143,3 +143,17 @@ def selec():
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True, use_colors=True, log_level="debug")
+
+# В конце main.py — оставьте только для локальной разработки
+# if __name__ == "__main__":
+#     import os
+#     # Не запускаем reload в Docker
+#     # reload_mode = os.getenv("DOCKER_ENV", "false").lower() != "true"
+#     uvicorn.run(
+#         "main:app",
+#         host="0.0.0.0",
+#         port=8000,
+#         reload=True,  # ← Отключаем reload в контейнере  reload_mode
+#         use_colors=True,
+#         log_level="debug"
+#     )
