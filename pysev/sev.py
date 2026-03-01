@@ -20,18 +20,31 @@ class Cal:
             raise
         except TypeError as e:
             print(f"Ошибка типа: {e}")
-            raise  # повторно выбрасываем исключение
+            raise
         except Exception as e:
             print(f"Неожиданная ошибка: {e}")
             raise
 
+    def add(self) -> float:
+        """Сложение"""
+        try:
+            # ← Добавляем проверку типов (как в delenie)
+            if not (isinstance(self.x, (int, float)) and isinstance(self.y, (int, float))):
+                raise TypeError("Неверный тип данных")
+            return self.x + self.y
+        except TypeError as e:
+            print(f"Ошибка типа: {e}")
+            raise
+        except Exception as e:
+            print(f"Неожиданная ошибка: {e}")
+            raise
     def ymnozen(self) -> float:
         """Умножение"""
         return self.x * self.y
 
-    def add(self) -> float:
-        """Сложение"""
-        return self.x + self.y
+    # def add(self) -> float:
+    #     """Сложение"""
+    #     return self.x + self.y
 
     def razn(self) -> float:
         """Разность"""
