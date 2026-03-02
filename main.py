@@ -48,7 +48,7 @@ def s():
             jeys = json.load(file)["val"]
             for jey in jeys:
                 user = User(**jey)
-                js[user.login] = user.password
+                js[user.login] = [user.password,user.name,user.o_sebe]
         return js
     except ValidationError as e:
         # print(e.errors())
