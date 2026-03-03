@@ -1,18 +1,12 @@
 from datetime import datetime, timezone
-from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String, create_engine, text, select, desc, \
-    func
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, backref, mapped_column, relationship, sessionmaker
-from Core.config import *
+from sqlalchemy import Boolean, DateTime, Float, Integer, String, create_engine, desc
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
+from logs.config import *
 engine = create_engine(load_config().sql_tabl, echo=True)  # echo - логирование SQL
 
 
 class Base(DeclarativeBase):
     pass
-
-
-# Base.metadata.create_all(bind=engine)
-
 # Переименуйте переменную, чтобы избежать конфликта имен
 SessionLocal = sessionmaker(bind=engine)
 session = SessionLocal()  # Используйте переименованную переменную

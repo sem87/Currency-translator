@@ -39,8 +39,8 @@ logs/
 informing/
 inform.log
 loGgGi.log
-Core/
-Core/logs
+logs/
+logs/logs
 
 # === SQLite ===
 # Игнорируем файлы БД, если они генерируются локально

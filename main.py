@@ -1,26 +1,17 @@
 import json
-from pathlib import Path
-
 import uvicorn
 from fastapi import FastAPI, Form, Request
-from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
 from API.db.models import *
 from API.parser.parscb import get_cbr_zena
-from Core.config import *
-from Core.logger import logger
-from data_SQL import *
-
+from logs.logger import logger
+from baze_sql.data_SQL import *
 app = FastAPI()
 app.mount("/API/static", StaticFiles(directory="API/static"), name="static")
-
 # -----------------------------
 # Указываем путь к папке с шаблонами
 templates = Jinja2Templates(directory="HTML")
-
-
 # -----------------------------
 @app.get("/", tags=["Главная страница ПО ВАЛЮТЕ"], summary="Начальная страница", description="Загружает главную страницу HTML")
 def nachalo(request: Request):
@@ -143,17 +134,3 @@ def selec():
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True, use_colors=True, log_level="debug")
-
-# В конце main.py — оставьте только для локальной разработки
-# if __name__ == "__main__":
-#     import os
-#     # Не запускаем reload в Docker
-#     # reload_mode = os.getenv("DOCKER_ENV", "false").lower() != "true"
-#     uvicorn.run(
-#         "main:app",
-#         host="0.0.0.0",
-#         port=8000,
-#         reload=True,  # ← Отключаем reload в контейнере  reload_mode
-#         use_colors=True,
-#         log_level="debug"
-#     )
