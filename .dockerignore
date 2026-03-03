@@ -3,15 +3,9 @@
 # необходимости мои
 # по шаблону
 .env*
-*.env
-.env.marat
 __pycache__/
-*.pyc
 venv/
 .venv
-MAR.session
-.env.wallet
-
 # ===============================================
 # 1. СИСТЕМНЫЕ ФАЙЛЫ И GIT (Рекомендуется для всех)
 # ==========================================
@@ -20,9 +14,6 @@ MAR.session
 .gitignore
 .gitmodules
 .github/
-.github/workflows
-translator.yml
-
 # Файлы Docker (обычно не нужны внутри образа)
 Dockerfile*
 docker-compose*
@@ -34,11 +25,8 @@ docker-compose*
 # VS Code
 #.vscode/
 #*.code-workspace
-
 # JetBrains (IntelliJ, PyCharm, WebStorm и др.)
 .idea/
-*.iml
-
 # Другие редакторы
 #*.swp
 #*.swo
@@ -50,8 +38,6 @@ docker-compose*
 # 3. СЕКРЕТЫ И КОНФИГУРАЦИЯ (Критично!)
 # ==========================================
 # Файлы с паролями и ключами (НИКОГДА не должны попадать в образ)
-.env
-*.pem
 *.key
 secrets/
 credentials/
@@ -67,14 +53,12 @@ credentials/
 #yarn-error.log
 
 # [ ] Python
-__pycache__
 *.py[cod]
 *$py.class
 *.so
 .Python
 venv
 env/
-.venv/
 pip-log.txt
 pip-delete-this-directory.txt
 
