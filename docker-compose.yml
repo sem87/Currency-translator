@@ -9,7 +9,7 @@ services:  # Список сервисов (контейнеров)
       - "30:8000"  # "хост:контейнер"
     environment:  # Переменные окружения
       - DOCKER_ENV=true  # Флаг для отключения reload
-      - DATABASE_URL=sqlite:///./app/data.db
+      - DATABASE_URL=sqlite:///./app/books.db
     volumes:  # Монтирование папок
       - .:/app  # Синхронизация кода (для разработки)
       - ./logs:/app/logs  # Логи сохраняются на хосте

@@ -1,12 +1,9 @@
 from datetime import datetime, timezone
-
 from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String, create_engine, text, select, desc, \
     func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, backref, mapped_column, relationship, sessionmaker
-
 from Core.config import *
-
 engine = create_engine(load_config().sql_tabl, echo=True)  # echo - логирование SQL
 
 
