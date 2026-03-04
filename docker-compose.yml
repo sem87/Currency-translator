@@ -14,10 +14,12 @@ services:  # Список сервисов (контейнеров)
 
   # FastAPI приложение
   web:
-    build:   # Сборка из Dockerfile в текущей папке
-      context: .
-      dockerfile: Dockerfile
-    #    image: sem87sem/translator:latest # или из имейдж
+#    build:   # Сборка из Dockerfile в текущей папке
+#      context: .
+#      dockerfile: Dockerfile
+    image: sem87sem/translator:latest # или из имейдж
+    pull_policy: always   # <--- ЭТА СТРОКА ЗАСТАВИТ СКАЧИВАТЬ ОБРАЗ
+#    restart: always
     container_name: translator  # Имя контейнера
     ports:
       - "8000:8000"  # "хост:контейнер"
