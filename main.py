@@ -7,6 +7,7 @@ from API.db.models import *
 from API.parser.parscb import get_cbr_zena
 from logs.logger import logger
 from baze_sql.data_SQL import *
+from redis_client import *
 from pathlib import Path
 app = FastAPI()
 app.mount("/API/static", StaticFiles(directory="API/static"), name="static")
@@ -72,18 +73,41 @@ def otzovidef(
     return f"Ваш отзыв {user.name_fio} успешно отправлен  вот он   {user}"
 
 
-@app.get("/otzivi", tags=["Действия с данными SQL"], summary="ПОлучение всей таблице Отзывов (В SQL)",
-         description="Работа с ОТЗЫВАМИ")
+@app.get("/otzivi", tags=["Действия с данными SQL"],
+            summary="Получение всей таблицы Отзывов (SQL + Redis)",
+            description="Работа с ОТЗЫВАМИ. Данные кэшируются в Redis.")
 def otzovidef(request: Request):
-    all_users = session.query(Usersql).all()
-    dict_otziv = {}
-    for all_user in all_users:
-        dict_otziv[all_user.name_fio] = all_user.otziv
-    print(f"📁 Текущая рабочая папка: {os.getcwd()}")
-    print(f"📄 Полный путь к БД: {Path('books.db').resolve()}")
+    CACHE_KEY = "cache:otzivi:all"  # Уникальный ключ для кеша
+    from_db = False  # Флаг: данные из БД или из кеша
+    # 🔍 1. Пытаемся получить данные из Redis
+    cached_data = redis_client.get(CACHE_KEY)
+    if cached_data:
+        # ✅ Данные в кеше — десериализуем JSON
+        dict_otziv = json.loads(cached_data)
+        cache_source = "redis"  # Помечаем источник
+    else:
+        # ❌ Кеш пуст — идём в базу
+        all_users = session.query(Usersql).all()
+        dict_otziv = {user.name_fio: user.otziv for user in all_users}
+        # 💾 Сохраняем в Redis с TTL (время жизни)
+        redis_client.setex(
+            CACHE_KEY,  # ключ
+            REDIS_TTL,  # время жизни в секундах
+            json.dumps(dict_otziv)  # данные в JSON
+        )
+        from_db = True
+        cache_source = "database"
+    # 🎨 Передаём в шаблон данные + мета-информацию
     return templates.TemplateResponse(
         "Otvet.html",
-        {"request": request, "dict_otziv": dict_otziv})
+        {
+            "request": request,
+            "dict_otziv": dict_otziv,
+            "cache_source": cache_source,  # "redis" или "database"
+            "cache_ttl": REDIS_TTL,  # Чтобы показать пользователю
+            "from_cache": not from_db,  # Удобный булевый флаг
+        }
+    )
 
 
 @app.post("/parsing", tags=["Действия с данными"], summary="Парсинг цен",

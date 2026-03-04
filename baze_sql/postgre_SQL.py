@@ -15,7 +15,7 @@ class Base(DeclarativeBase):
 
 # Переименуйте переменную, чтобы избежать конфликта имен
 SessionLocal = sessionmaker(bind=engine)
-session = SessionLocal()  # Используйте переименованную переменную
+session1 = SessionLocal()  # Используйте переименованную переменную
 
 
 class Usersqlpostgre(Base):
@@ -31,5 +31,5 @@ Base.metadata.create_all(bind=engine)  # Эта строка создаст та
 
 if __name__ == "__main__":
     new_user_postgre = Usersqlpostgre(name_fio="Семен", zam="это сама заметка", objasnenie="это обьяснение")
-    session.add(new_user_postgre)
-    session.commit()
+    session1.add(new_user_postgre)
+    session1.commit()

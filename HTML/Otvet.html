@@ -7,30 +7,68 @@
     <link rel="stylesheet" href="API/static/obmen.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .cache-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        .from-redis {
+            background: #4CAF50;  /* зелёный */
+            color: white;
+        }
+        .from-database {
+            background: #2196F3;  /* синий */
+            color: white;
+        }
+    </style>
 </head>
 <body>
+    <!-- 🚦 Индикатор источника данных -->
+    {% if from_cache %}
+        <div class="cache-indicator from-redis">
+            ⚡ Из Redis-кеша (обновится через {{ cache_ttl }} сек)
+        </div>
+    {% else %}
+        <div class="cache-indicator from-database">
+            🗄️ Из базы данных (кеш обновлён)
+        </div>
+    {% endif %}
+
+    <!-- 📋 Основной контент -->
+    <h1>Отзывы пользователей</h1>
+
+    {% if dict_otziv %}
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Отзыв</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, review in dict_otziv.items() %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ review }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Отзывов пока нет 😔</p>
+    {% endif %}
+
+    <!-- 🔁 Кнопка сброса кеша (опционально) -->
+    <form action="/otzivi/clear-cache" method="post" style="margin-top: 20px;">
+        <button type="submit">🔄 Очистить кеш отзывов</button>
+    </form>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-leaf"></i>РАСЧЕТ КУРСА</h1>
-            <p class="subtitle">Конвертер валют с актуальными курсами</p>
-        </header>
-
-        <main>
-            <div class="app-container">
-                <!-- Ответ от запросов -->
-                <section class="rates-section">
-                    <form action="/otzivi" method="get">
-                        <button id="refresh-rates" class="refresh-btn">
-                            <i class="fas fa-sync-alt"></i> Обновить КУРС
-                        </button>
-                        <p class="last-update">Отзывы ВСЕ: <span id="last-update">{{dict_otziv}}</span></p>
-                    </form>
-
-                </section>
-
-            </div>
-        </main>
-
         <footer>
             <p>© 2024 Харитонов Семен | Конвертер валют</p>
             <p class="disclaimer">Курсы настоящие</p>

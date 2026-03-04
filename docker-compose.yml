@@ -1,26 +1,43 @@
 # docker-compose.yml
 services:  # Список сервисов (контейнеров)
+  redis:
+    image: redis:7.4-alpine
+    container_name: translator-redis
+
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+
   # FastAPI приложение
   web:
     build:   # Сборка из Dockerfile в текущей папке
       context: .
       dockerfile: Dockerfile
-    image: sem87sem/translator:latest # или из имейдж
+    #    image: sem87sem/translator:latest # или из имейдж
     container_name: translator  # Имя контейнера
     ports:
-      - "30:8000"  # "хост:контейнер"
+      - "8000:8000"  # "хост:контейнер"
     environment:  # Переменные окружения
       - DOCKER_ENV=true  # Флаг для отключения reload
-#      - DATABASE_URL=sqlite:///./app/books.db
+      - REDIS_HOST=redis      # Имя сервиса Redis
+      - REDIS_PORT=6379
+      - REDIS_TTL=30   # Время жизни кэша
+    #      - DATABASE_URL=sqlite:///./app/books.db
     env_file:
       - .env
     volumes:  # Монтирование папок
       - semen-data:/app/semen
-#      - books-db:/app/books.db
-#      - jey:/app/jey.json
       - ./jey.json:/app/jey.json  # Мой джесон
       - ./books.db:/app/books.db # управляем базой данных
+    depends_on:
+      redis:
+        condition: service_healthy
     restart: unless-stopped  # Перезапуск при падении
+
 
 volumes:
   semen-data:
