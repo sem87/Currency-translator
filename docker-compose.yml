@@ -9,13 +9,24 @@ services:  # Список сервисов (контейнеров)
       - "30:8000"  # "хост:контейнер"
     environment:  # Переменные окружения
       - DOCKER_ENV=true  # Флаг для отключения reload
-      - DATABASE_URL=sqlite:///./app/books.db
+#      - DATABASE_URL=sqlite:///./app/books.db
+    env_file:
+      -.env
     volumes:  # Монтирование папок
-      - .:/app  # Синхронизация кода (для разработки)
-      - ./logs:/app/logs  # Логи сохраняются на хосте
-      - ./jey.json:/app/jey.json  # Мой джесон
-      - ./books.db:/app/books.db # управляем базой данных
+      - semen-data:/app/semen
+      - books-db:/app/books.db
+      - jey:/app/jey.json
+#      - ./jey.json:/app/jey.json  # Мой джесон
+#      - ./books.db:/app/books.db # управляем базой данных
     restart: unless-stopped  # Перезапуск при падении
-#    networks:
-#      app_network:
-#        driver: bridge
+
+  volumes:
+    semen-data:
+      driver: local
+    books-db:
+      driver: local
+    jey:
+      driver: local
+#  networks:
+#    app_network:
+#      driver: bridge
