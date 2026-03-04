@@ -2,7 +2,9 @@
 services:  # Список сервисов (контейнеров)
   # FastAPI приложение
   web:
-    build: .  # Сборка из Dockerfile в текущей папке
+    build:   # Сборка из Dockerfile в текущей папке
+      context: .
+      dockerfile: Dockerfile
     image: sem87sem/translator:latest # или из имейдж
     container_name: translator  # Имя контейнера
     ports:
@@ -11,22 +13,18 @@ services:  # Список сервисов (контейнеров)
       - DOCKER_ENV=true  # Флаг для отключения reload
 #      - DATABASE_URL=sqlite:///./app/books.db
     env_file:
-      -.env
+      - .env
     volumes:  # Монтирование папок
       - semen-data:/app/semen
-      - books-db:/app/books.db
-      - jey:/app/jey.json
-#      - ./jey.json:/app/jey.json  # Мой джесон
-#      - ./books.db:/app/books.db # управляем базой данных
+#      - books-db:/app/books.db
+#      - jey:/app/jey.json
+      - ./jey.json:/app/jey.json  # Мой джесон
+      - ./books.db:/app/books.db # управляем базой данных
     restart: unless-stopped  # Перезапуск при падении
 
-  volumes:
-    semen-data:
-      driver: local
-    books-db:
-      driver: local
-    jey:
-      driver: local
+volumes:
+  semen-data:
+    driver: local
 #  networks:
 #    app_network:
 #      driver: bridge

@@ -7,6 +7,7 @@ from API.db.models import *
 from API.parser.parscb import get_cbr_zena
 from logs.logger import logger
 from baze_sql.data_SQL import *
+from pathlib import Path
 app = FastAPI()
 app.mount("/API/static", StaticFiles(directory="API/static"), name="static")
 # -----------------------------
@@ -78,6 +79,8 @@ def otzovidef(request: Request):
     dict_otziv = {}
     for all_user in all_users:
         dict_otziv[all_user.name_fio] = all_user.otziv
+    print(f"📁 Текущая рабочая папка: {os.getcwd()}")
+    print(f"📄 Полный путь к БД: {Path('books.db').resolve()}")
     return templates.TemplateResponse(
         "Otvet.html",
         {"request": request, "dict_otziv": dict_otziv})
