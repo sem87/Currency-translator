@@ -1,7 +1,8 @@
 name: translator
 
 on:
-  workflow_dispatch:
+  push:
+    branch: [main]
 
 jobs:
   lint:
