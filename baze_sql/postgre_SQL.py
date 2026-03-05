@@ -2,7 +2,7 @@ import requests as r
 from sqlalchemy import Integer, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-from logs.config import *
+from logosti.config import *
 
 
 # engine = create_engine(load_config_postgre(), echo=True)

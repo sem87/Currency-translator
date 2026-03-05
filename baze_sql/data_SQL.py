@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 from sqlalchemy import Boolean, DateTime, Float, Integer, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-from logs.config import *
+from logosti.config import *
 
 
 engine = create_engine(load_config().sql_tabl, echo=True)  # echo - логирование SQL

@@ -1,16 +1,17 @@
 import json
+from datetime import UTC, datetime
 
 import uvicorn
 from fastapi import FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from API.db.models import Zen, User, Otziv, Tiker
+from API.db.models import Otziv, Tiker, User, Zen
 from API.parser.parscb import get_cbr_zena
-from baze_sql.data_SQL import session, Usersql, Zeni
-from logs.logger import logger
-from redis_client import redis_client,REDIS_TTL
-from datetime import datetime, timezone
+from baze_sql.data_SQL import Usersql, Zeni, session
+from logosti.logger import logger
+from redis_client import REDIS_TTL, redis_client
+
 
 app = FastAPI()
 app.mount("/API/static", StaticFiles(directory="API/static"), name="static")
@@ -120,7 +121,7 @@ def pars(request: Request):
     tabli.eur = zena["eur"]
     tabli.gbp = zena["gbp"]
     tabli.cny = zena["cny"]
-    tabli.created_at = datetime.now(timezone.utc)
+    tabli.created_at = datetime.now(UTC)
     session.commit()
     tabliza_zen = session.query(Zeni).first()
     return templates.TemplateResponse(
