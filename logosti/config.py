@@ -33,7 +33,7 @@ def load_config(path: str = None) -> Config:
         db=DatabaseConfig(database_url=env("DATABASE_URL")),
         secret_key=env("SECRET_KEY"),
         debug=env.bool("DEBUG", default=False),
-        sql_tabl=env("SQL_TABL")
+        sql_tabl=env("SQL_TABL"),
     )
 
 
@@ -67,7 +67,7 @@ def proverka():
         database=os.getenv("DB_NAME"),
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
-        sslmode="require"  # Обязательно для Supabase!
+        sslmode="require",  # Обязательно для Supabase!
     )
     print("✅ Подключено!")
 
@@ -95,21 +95,21 @@ def proverka():
 
 def db_proverka():
     # Fetch variables
-    USER = os.getenv("USER")
-    PASSWORD = os.getenv("PASSWORD")
-    HOST = os.getenv("HOST")
-    PORT = os.getenv("PORT")
-    DBNAME = os.getenv("DBNAME")
+    user = os.getenv("USER")
+    password = os.getenv("PASSWORD")
+    host = os.getenv("HOST")
+    port = os.getenv("PORT")
+    dbname = os.getenv("DBNAME")
     # Construct the SQLAlchemy connection string
-    DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
+    database_url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{dbname}?sslmode=require"
     # Create the SQLAlchemy engine
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(database_url)
     # If using Transaction Pooler or Session Pooler, we want to ensure we disable SQLAlchemy client side pooling -
     # https://docs.sqlalchemy.org/en/20/core/pooling.html#switching-pool-implementations
     # engine = create_engine(DATABASE_URL, poolclass=NullPool)
     # Test the connection
     try:
-        with engine.connect() as connection:
+        with engine.connect():
             print("Connection successful!")
     except Exception as e:
         print(f"Failed to connect: {e}")

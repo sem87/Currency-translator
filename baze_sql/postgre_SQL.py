@@ -1,15 +1,18 @@
+import os
+
 import requests as r
 from sqlalchemy import Integer, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-from logosti.config import *
+
+# from logosti.config import
 
 
 # engine = create_engine(load_config_postgre(), echo=True)
-engine = create_engine(os.getenv("DATABASE_URL"), echo=True,future=True)
+engine = create_engine(os.getenv("DATABASE_URL"), echo=True, future=True)
 
 # Переименуйте переменную, чтобы избежать конфликта имен
-SessionLocal = sessionmaker(bind=engine,autocommit=False,autoflush=False,expire_on_commit=False)
+SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False, expire_on_commit=False)
 session1 = SessionLocal()  # Используйте переименованную переменную
 
 
@@ -18,8 +21,8 @@ class Base(DeclarativeBase):
 
 
 class Usersqlpostgre(Base):
-    __tablename__ = 'otziv_sql_postgre'
-    id: Mapped[int] = mapped_column(Integer, primary_key=True,index=True,autoincrement=True)
+    __tablename__ = "otziv_sql_postgre"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
     # created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
     name_fio: Mapped[str] = mapped_column(String)
     zam: Mapped[str] = mapped_column(String)
@@ -39,6 +42,6 @@ if __name__ == "__main__":
             session1.add(new_user_postgre)
             session1.commit()
 
-        except:
-            print(f"❌ {ip} → недоступен")
+        except Exception as e:
+            print(f"❌ {ip} → недоступен {e}")
         # 🔌 Соединение закрывается автоматически

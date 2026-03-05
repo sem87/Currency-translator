@@ -6,6 +6,10 @@ from urllib.parse import quote_plus
 
 from dotenv import load_dotenv
 
+# === 2. Импорт SQLAlchemy ПОСЛЕ загрузки .env ===
+from sqlalchemy import DateTime, Integer, String, create_engine, text
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
 
 # Загружаем .env ПЕРЕД использованием os.getenv()
 # Явно указываем путь, если файл не в корне проекта
@@ -39,11 +43,6 @@ def load_config_postgre() -> str:
     )
 
 
-# === 2. Импорт SQLAlchemy ПОСЛЕ загрузки .env ===
-from sqlalchemy import DateTime, Integer, String, create_engine, text
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
-
-
 # === 3. Создание engine с правильными SSL-настройками ===
 try:
     # Попробуем использовать certifi для сертификатов
@@ -69,7 +68,7 @@ engine = create_engine(
     pool_pre_ping=True,  # Проверка "живости" соединения
     pool_size=3,  # Оптимально для Supabase pooler
     max_overflow=5,
-    connect_args=ssl_config
+    connect_args=ssl_config,
 )
 
 
@@ -79,13 +78,10 @@ class Base(DeclarativeBase):
 
 
 class Usersqlpostgre(Base):
-    __tablename__ = 'otziv_sql_postgre'
+    __tablename__ = "otziv_sql_postgre"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=lambda: datetime.now(UTC)
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(UTC))
     name_fio: Mapped[str] = mapped_column(String)
     zam: Mapped[str] = mapped_column(String)
     objasnenie: Mapped[str] = mapped_column(String)
@@ -143,11 +139,7 @@ def main():
         # Добавляем запись через контекстный менеджер
         print("\n💾 Добавляю тестовую запись...")
         with SessionLocal() as session:
-            new_record = Usersqlpostgre(
-                name_fio="Семен",
-                zam="это сама заметка",
-                objasnenie="это объяснение"
-            )
+            new_record = Usersqlpostgre(name_fio="Семен", zam="это сама заметка", objasnenie="это объяснение")
             session.add(new_record)
             session.commit()
             # Refresh чтобы получить ID после INSERT
@@ -163,6 +155,7 @@ def main():
     except Exception as e:
         print(f"❌ Ошибка при работе с БД: {type(e).__name__}: {e}")
         import traceback
+
         traceback.print_exc()
 
 
