@@ -133,14 +133,14 @@ def pars(request: Request):
 
 @app.post("/convert", tags=["Действия с данными"], summary="Конвертация ВАЛЮТЫ ",
           description="Перевод одной валюты в другую")
-def pars(request: Request, summa: float = Form(...),
+def pars1(request: Request, summa: float = Form(...),
          ticker: str = Form(...),
          ticker_convert: str = Form(...)):
     tik = Tiker(ticker=ticker, ticker_convert=ticker_convert, summa=summa)
     tabliza_zen = session.query(Zeni).first()
     din = {"usd": tabliza_zen.usd, "eur": tabliza_zen.eur, "gbp": tabliza_zen.gbp, "cny": tabliza_zen.cny}
-    do = din[tik.ticker] if tik.ticker in din else 1.0
-    posle = din[tik.ticker_convert] if tik.ticker_convert in din else 1.0
+    do = din.get(tik.ticker, 1.0)
+    posle = din.get(tik.ticker_convert, 1.0)
     rezult = tik.summa * (do / posle)
     return templates.TemplateResponse(
         "Obmen.html",
