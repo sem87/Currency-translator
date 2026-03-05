@@ -1,7 +1,11 @@
-from datetime import datetime, timezone
-from sqlalchemy import Boolean, DateTime, Float, Integer, String, create_engine, desc
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
+from datetime import UTC, datetime
+
+from sqlalchemy import Boolean, DateTime, Float, Integer, String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
 from logs.config import *
+
+
 engine = create_engine(load_config().sql_tabl, echo=True)  # echo - логирование SQL
 
 
@@ -20,7 +24,7 @@ class Usersql(Base):
     age: Mapped[int | None] = mapped_column(Integer)
     otziv: Mapped[str] = mapped_column(String)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC))
 
 
 class Zeni(Base):
@@ -30,6 +34,6 @@ class Zeni(Base):
     eur: Mapped[float] = mapped_column(Float)
     gbp: Mapped[float] = mapped_column(Float)
     cny: Mapped[float] = mapped_column(Float)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC))
 
 # Base.metadata.create_all(bind=engine)  # Эта строка создаст таблицу zeni

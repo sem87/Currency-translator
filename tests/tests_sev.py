@@ -1,5 +1,7 @@
-import pytest
 from contextlib import nullcontext as does_not_raise
+
+import pytest
+
 from pysev.sev import Cal
 
 

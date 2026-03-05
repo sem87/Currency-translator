@@ -1,9 +1,11 @@
 # postgre_SQL.py
 import os
 import sys
+from datetime import UTC, datetime
 from urllib.parse import quote_plus
-from datetime import datetime, timezone
+
 from dotenv import load_dotenv
+
 
 # Загружаем .env ПЕРЕД использованием os.getenv()
 # Явно указываем путь, если файл не в корне проекта
@@ -38,8 +40,9 @@ def load_config_postgre() -> str:
 
 
 # === 2. Импорт SQLAlchemy ПОСЛЕ загрузки .env ===
-from sqlalchemy import create_engine, text, String, DateTime, Integer
-from sqlalchemy.orm import DeclarativeBase, sessionmaker, Mapped, mapped_column
+from sqlalchemy import DateTime, Integer, String, create_engine, text
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
 
 # === 3. Создание engine с правильными SSL-настройками ===
 try:
@@ -81,7 +84,7 @@ class Usersqlpostgre(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
-        default=lambda: datetime.now(timezone.utc)
+        default=lambda: datetime.now(UTC)
     )
     name_fio: Mapped[str] = mapped_column(String)
     zam: Mapped[str] = mapped_column(String)
@@ -112,7 +115,7 @@ def test_connection():
         with engine.connect() as conn:
             result = conn.execute(text("SELECT version();"))
             version = result.scalar()
-            print(f"✅ Подключено!")
+            print("✅ Подключено!")
             print(f"📦 PostgreSQL: {version[:60]}...")
         return True
     except Exception as e:

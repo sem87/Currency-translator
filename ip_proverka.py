@@ -1,4 +1,3 @@
-import requests as r
 
 # my_ip = r.get("https://api.ipify.org", timeout=10).text
 # print(f"🌍 Мой публичный IP: {my_ip}")
@@ -15,6 +14,7 @@ import requests as r
 
 
 import requests
+
 
 proxy_url = "5.252.33.13:2025"
 # Если прокси требует логин/пароль:

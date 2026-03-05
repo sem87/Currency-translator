@@ -1,21 +1,27 @@
 import json
+
 import uvicorn
 from fastapi import FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from API.db.models import *
+
+from API.db.models import Zen, User, Otziv, Tiker
 from API.parser.parscb import get_cbr_zena
+from baze_sql.data_SQL import session, Usersql, Zeni
 from logs.logger import logger
-from baze_sql.data_SQL import *
-from redis_client import *
-from pathlib import Path
+from redis_client import redis_client,REDIS_TTL
+from datetime import datetime, timezone
+
 app = FastAPI()
 app.mount("/API/static", StaticFiles(directory="API/static"), name="static")
 # -----------------------------
 # Указываем путь к папке с шаблонами
 templates = Jinja2Templates(directory="HTML")
+
+
 # -----------------------------
-@app.get("/", tags=["Главная страница ПО ВАЛЮТЕ"], summary="Начальная страница", description="Загружает главную страницу HTML")
+@app.get("/", tags=["Главная страница ПО ВАЛЮТЕ"], summary="Начальная страница",
+         description="Загружает главную страницу HTML")
 def nachalo(request: Request):
     tabliza_zen = session.query(Zeni).first()
     okruglen = Zen(usd=tabliza_zen.usd, eur=tabliza_zen.eur, gbp=tabliza_zen.gbp, cny=tabliza_zen.cny,
@@ -32,15 +38,14 @@ def nachalo(request: Request):
 def s():
     try:
         js = {}
-        with open('jey.json', 'r', encoding='utf-8') as file:
+        with open('jey.json', encoding='utf-8') as file:
             jeys = json.load(file)["val"]
             for jey in jeys:
                 user = User(**jey)
-                js[user.login] = [user.password,user.name,user.o_sebe]
+                js[user.login] = [user.password, user.name, user.o_sebe]
         return js
-    except ValidationError as e:
-        # print(e.errors())
-        return e.errors()
+    except Exception as e:
+        print(f"ошибка {e}")
 
 
 @app.post("/otzivi", tags=["Действия с данными SQL"], summary="Запись ФИО и Отзыва (В SQL)",
@@ -69,8 +74,8 @@ def otzovidef(
 
 
 @app.get("/otzivi", tags=["Действия с данными SQL"],
-            summary="Получение всей таблицы Отзывов (SQL + Redis)",
-            description="Работа с ОТЗЫВАМИ. Данные кэшируются в Redis.")
+         summary="Получение всей таблицы Отзывов (SQL + Redis)",
+         description="Работа с ОТЗЫВАМИ. Данные кэшируются в Redis.")
 def otzovidef(request: Request):
     CACHE_KEY = "cache:otzivi:all"  # Уникальный ключ для кеша
     from_db = False  # Флаг: данные из БД или из кеша
@@ -146,7 +151,7 @@ def pars(request: Request, summa: float = Form(...),
 @app.get("/sel", tags=["Действия select bnl"], summary="Простейшие операции изм",
          description="Действия select ОБУЧЕНИЕ")
 def selec():
-    firs = session.query(Usersql.age, Usersql.id, Usersql.name_fio).order_by(desc(Usersql.age))
+    firs = session.query(Usersql.age, Usersql.id, Usersql.name_fio).order_by(Usersql.age)
     itog = {}
     for fir in firs:
         itog[fir[0]] = [fir[1], fir[2]]

@@ -1,11 +1,9 @@
-from datetime import datetime, timezone
-from sqlalchemy import Boolean, DateTime, Float, Integer, String, create_engine, desc, text, event
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
-from sqlalchemy.engine import Engine
-from sqlalchemy.pool import QueuePool
-import psycopg2
-from logs.config import *
 import requests as r
+from sqlalchemy import Integer, String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
+from logs.config import *
+
 
 # engine = create_engine(load_config_postgre(), echo=True)
 engine = create_engine(os.getenv("DATABASE_URL"), echo=True,future=True)
