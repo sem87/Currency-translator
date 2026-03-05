@@ -1,8 +1,8 @@
-name: translator
+name: translator CI/CD
 
 on:
   push:
-    branch: [main]
+    branches: [main]
 
 jobs:
   lint:
