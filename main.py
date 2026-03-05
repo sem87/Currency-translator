@@ -29,11 +29,6 @@ def nachalo(request: Request):
     # return FileResponse("HTML/Obmen.html")
 
 
-# @app.get("/key", tags=["Главная страница"], summary="Секретные данные", description="Выводит секретные данные env")
-# def config():
-#     return load_config()
-
-
 @app.get("/p", tags=["Действия с данными"], summary="Чтение данных из json", description="Читает все данные из JSON")
 def s():
     try:
