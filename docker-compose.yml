@@ -3,7 +3,6 @@ services:  # Список сервисов (контейнеров)
   redis:
     image: redis:7.4-alpine
     container_name: translator-redis
-
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s

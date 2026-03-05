@@ -34,13 +34,9 @@ venv.bak/
 
 # === FastAPI / ASGI / Uvicorn ===
 # (обычно не требуют специфичных исключений, но логи — да)
-*.log
-logs/
+
 informing/
-inform.log
 loGgGi.log
-logs/
-logs/logs
 
 # === SQLite ===
 # Игнорируем файлы БД, если они генерируются локально
@@ -54,7 +50,6 @@ books.db
 # database.db
 # — раскомментируйте строку ниже:
 # database.db
-
 # === Secrets & Config ===
 .env
 .env.local
